@@ -1,0 +1,5 @@
+1) ejecutar venv\Scripts\activate.bat
+
+2) ejecutar en consola alembic revision -m "generacion revision #1"
+
+3)despues de modificar la revision, aplicar comando tipo alembic upgrade +1   o alembic upgrade head

@@ -1,0 +1,7 @@
+1) Seleccionar el interprete de python que esta en la carpate venv
+
+2) en la cmd de la terminal, escribir venv\Scripts\activate.bat
+
+3) prender el server con uvicorn app.main:app --reload
+
+4) http://127.0.0.1:8000/docs#/default/read_root__get

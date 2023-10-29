@@ -1,0 +1,4 @@
+con laapp activada en vscode (venv\Scripts\activate.bat)
+heroku create fastapi-uwu
+
+git push heroku main
