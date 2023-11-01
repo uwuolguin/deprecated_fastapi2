@@ -1,4 +1,22 @@
-con laapp activada en vscode (venv\Scripts\activate.bat)
-heroku create fastapi-uwu
+1) Create an heroku account and install it
 
-git push heroku main
+2) Con la app activada en vscode (venv\Scripts\activate.bat) , escribir heroku create fastapi-uwu 
+
+3) Git remote
+
+4) Crear archivo Procfile con web: uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000}
+
+5) Git push heroku main
+
+6) Heroku addons:create heroku-postgresql:mini
+ 
+7) set up enviorment variables in heroku en config var de la app
+
+8)heroku run "alembic upgrade head"
+
+9)heroku ps:restart
+
+10)
+
+
+heroku ps:scale web=0 o heroku ps:scale web=1
