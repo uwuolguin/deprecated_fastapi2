@@ -1,0 +1,127 @@
+1)Crear cuenta
+2) Crear un droplet
+3) conectarse a mi vm desde la  terminal de windows, escribir: ssh root@137.184.184.165  , el 137.184.184.165
+debe cambiar segun cambie la ip de tu app
+4) actualizar la maquina virtual , para ello, escribir en la terminal: sudo apt update && sudo apt upgrade -y
+5)install pip con apt install python3-pip
+6) instalar virtualenv con sudo pip3 install virtualenv
+7) instalar postgres con sudo apt install postgresql postgresql-contrib
+8) correr el comando sudo cat /etc/passwd para encontrar el usuario de postgres ademas de los otros usuarios incluidos en la vm
+9) para cambiar de usuario y poder entrar por psql, meter el comando su -l postgres
+10) logearse a la base de datos de postgres con el comando psql -U postgres
+11) Create password to user in postrges, usar comando \password postgres
+12) quit postgres by usin \q
+13)aplicar el comando exit para salir del usuario postgres en la terminal general de linux
+14)cambiar de directorio donde esta instalado postgres con cd /etc/postgresql/14/main , donde el 14 depende de la version de postgres instalada(podria ser 15
+15)ir a la configuracion de postgres con sudo vi postgresql.conf y bajar para encontrar la seccion: connections and authentication.
+16) listen_addreses deberia estar solo con localhost, esto implica que solo la vm se puede meter al postgres, para modificarlo hay que escribir en el texto 
+listen_addresses= '*' y despues la tecla esc los dos puntos y finamelnte escribir wq y apretar enter
+17) ir a sudo vi pg_hba.conf y modificar la parte de # Database administrative login by Unix domain socket , hay que modificar las primeras 4 filas, tienen que quedar :
+
+	-local all postgres md5
+	-local all all md5
+	-local all all 0.0.0.0/0 md5
+	-local all all ::/0 md5
+
+18) reiniciar postgresql con el comando systemctl restart postgresql
+
+19) en el directorio principal crear usuario con adduser caos y meterte al usuario con su - user (en vez de user debe ir el nombre del usuario nuevo) para probar pero volver al root
+
+20) usermod -aG sudo caos para dar sudo privilegies, ir a directorio general (root) y entrar con  su - caos
+
+21) en la direccion , crear otro directorio para la app con el comando mkdir app y entrar con cd app
+
+22) crear venv con el comando virtualenv venv
+
+23) meterse a el venv con source venv/bin/activate( se puede salir con deactivate)
+
+24) crear un directorio para guardar codigo mkdir src y entrar con cd src/  (tiene que quedar dentro de app)
+
+25) aplicar git clone (https del proyecto) (espacio) .
+
+26) meter el comando (con el venv apago, en el directorio app/src)  sudo apt install libpq-dev, aplicar en el directorio app ( para pasar de app/src a app 
+usar el   cd ..y reactivar virtualenv, luego ir a cd src/, meter pip install -r requirements.txt
+
+27) colocar el comando printenv para ver las variables de entorno
+
+28) Ir al menu principal con cd ~ , luego aplicar touch .env, se puede abrir el archivo con vi .env, copiar y pegar el .env de desarrollo.
+
+29) en el mismo directorio que 28, meter el comando set -o allexport; source /home/caos/.env; set +o allexport
+
+30) desactivar el venv, y en el directorio principal del usuario, aplicar vi .profile y copiar el comando 
+"set -o allexport; source /home/caos/.env; set +o allexport" al final del archivo
+
+31) Modificar en .env segun corresponda
+
+32)activar venv, ir a app/src  y  alli meter el comando alembic upgrade head
+
+33)instalar guvicorn en app/src con el comando pip install guvicorn y pip install uvloop con el venv encendido
+
+34) en app/src aplicar el comando gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+
+35) crear sistema en cd /etc/systemd/system/
+
+36) sudo vi "nombre".service
+
+37) modificar el guvicorn.service, modificarlo y despues copiarlo en el archivo sudo vi "nombre".service
+
+38)sudo systemctl restart api.service
+
+39) para chequear que el servicio esté corriendo, meter el comando systemctl status "nombre".service, debe decir active
+
+40) ir al directorio general del usuario , desactivar venv,y meter sudo systemctl enable "nombre".service
+
+41) Ir al directorio principal del usuario y meter el comando sudo apt install nginx -y , y despues systemctl  start nginx
+
+42) ir a cd /etc/nginx/sites-available/
+
+43) tomar el archivo nginx y copiarlo en el archivo default de el direcotrio de l punto 42, con el comando sudo vi default
+
+44) debes copair solo lo del location, borrando lo que estaba dentro de location y reemplazando con lo que esta dentro de tu archivo
+
+
+        location / {
+                proxy_pass http://localhost:8000;
+                proxy_http_version 1.1;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $http_host;
+                proxy_set_header X-NginX-Proxy true;
+                proxy_redirect off;
+        
+}
+
+
+
+45) meter systemctl restart nginx
+
+
+46) comprarle un dominio a la app, si tu app es una api....... compra una wea barata no mas en namecheap
+
+47) ir a este link: https://docs.digitalocean.com/products/networking/dns/getting-started/dns-registrars/
+
+ir a namecheap, te dara las intrucciones de que hacer en tu pag de namecheap
+
+48) en la pag de name cheap, en la seccion de "nameservers",ir a custom dns y  meter:
+
+	1)ns1.digitalocean.com
+	2)ns2.digitalocean.com
+	3)ns3.digitalocean.com
+
+49) ir al panel de control de digital ocean, ir a manage dns on digital ocean y meter el dominio comprado
+
+50) añadir un record del tipo cname con www. y despues @
+
+51) ir a https://certbot.eff.org/ , ir a instruccciones, menter nginx y la version de ubuntu
+
+52) ir al directorio cd /etc/nginx/sites-available/ y meter snap --version para ver si eso esta instalado
+53)sudo snap install --classic certbot
+54)seguir los pasos en certbot, pa que seguir copiando....
+
+55) METER AL CERTIFICADO WWW.DOMINIO Y DOMINIO (DOMINIO = APIUWU.AUTOS POR EJEMPLO)
+
+
+
+
