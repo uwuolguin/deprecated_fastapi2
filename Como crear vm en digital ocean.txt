@@ -55,13 +55,13 @@ usar el   cd ..y reactivar virtualenv, luego ir a cd src/, meter pip install -r 
 
 32)activar venv, ir a app/src  y  alli meter el comando alembic upgrade head
 
-33)instalar guvicorn en app/src con el comando pip install guvicorn y pip install uvloop con el venv encendido
+33)instalar guvicorn en app/src con el comando pip install gunicorn y pip install uvloop con el venv encendido
 
 34) en app/src aplicar el comando gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
 
 35) crear sistema en cd /etc/systemd/system/
 
-36) sudo vi "nombre".service
+36) sudo vi "nombre".service (yo use api en vez de "nombre")
 
 37) modificar el guvicorn.service, modificarlo y despues copiarlo en el archivo sudo vi "nombre".service
 
@@ -120,8 +120,22 @@ ir a namecheap, te dara las intrucciones de que hacer en tu pag de namecheap
 53)sudo snap install --classic certbot
 54)seguir los pasos en certbot, pa que seguir copiando....
 
-55) METER AL CERTIFICADO WWW.DOMINIO Y DOMINIO (DOMINIO = APIUWU.AUTOS POR EJEMPLO)
+55) METER AL CERTIFICADO WWW.DOMINIO Y DOMINIO (DOMINIO = APIUWU.AUTOS POR EJEMPLO), van separados con espacio
 
+56) meter los firewall:
 
+sudo ufw allow http
 
+sudo ufw allow https
 
+sudo ufw allow ssh
+
+sudo ufw allow 5432  (esto es para que te puedas meter a postgresql sin pasar por la api)
+
+57) sudo ufw enable
+
+58) Pushear cambios de forma manual a produccion:
+
+	1) commit al changes to your github project
+	2)ir a cd/app/src y meter git pull
+	3) sudo systemctl restart "nombre".service (api.service)
