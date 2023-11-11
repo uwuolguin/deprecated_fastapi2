@@ -1,3 +1,5 @@
+#esto se genera con un comando con el venv prendidp, googlear como generarlo
+
 alembic==1.12.1
 annotated-types==0.6.0
 anyio==3.7.1

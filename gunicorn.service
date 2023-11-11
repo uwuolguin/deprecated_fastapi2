@@ -12,3 +12,5 @@ ExecStart=/home/caos/app/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker
 
 [Install]
 WantedBy=multi-user.target
+
+ 
